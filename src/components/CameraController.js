@@ -9,7 +9,7 @@ const CameraController = ({ isFixed, targetPosition }) => {
   useFrame(() => {
     if (isFixed && targetPosition) {
       camera.position.lerp(targetPosition, 0.05);
-      camera.lookAt(-0.15, 0.08, 1.68);
+      camera.lookAt(-0.6, 0.17, 2.84);
 
       if (controlsRef.current) {
         controlsRef.current.update();

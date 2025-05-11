@@ -1,15 +1,20 @@
 // import { Canvas, useThree, useFrame } from '@react-three/fiber';
 // import { OrbitControls, Html } from '@react-three/drei';
-// import { useEffect, useState } from 'react';
+// import { useEffect, useState, useRef } from 'react';
 // import Model from './Model';
 
-// // Camera values display component with Html wrapper
+// // Camera values display component with interactive controls
 // const CameraPositionLogger = () => {
 //   const { camera } = useThree();
 //   const [cameraValues, setCameraValues] = useState({
 //     position: [0, 0, 0],
 //     fov: 0
 //   });
+  
+//   const xInputRef = useRef(null);
+//   const yInputRef = useRef(null);
+//   const zInputRef = useRef(null);
+//   const fovInputRef = useRef(null);
   
 //   useFrame(() => {
 //     setCameraValues({
@@ -22,6 +27,17 @@
 //     });
 //   });
   
+//   // Apply camera position and FOV from input fields
+//   const updateCameraPosition = () => {
+//     camera.position.set(
+//       parseFloat(xInputRef.current.value),
+//       parseFloat(yInputRef.current.value),
+//       parseFloat(zInputRef.current.value)
+//     );
+//     camera.fov = parseFloat(fovInputRef.current.value);
+//     camera.updateProjectionMatrix();
+//   };
+
 //   // Use HTML overlay within Canvas with Html component
 //   return (
 //     <Html
@@ -37,13 +53,73 @@
 //         borderRadius: '4px',
 //         fontFamily: 'monospace',
 //         fontSize: '14px',
-//         pointerEvents: 'none'
+//         width: '280px'
 //       }}
 //     >
-//       <div>position: [{cameraValues.position.join(', ')}]</div>
-//       <div>fov: {cameraValues.fov}</div>
-//       <div style={{ fontSize: '12px', marginTop: '5px', opacity: 0.8 }}>
-//         Copy these values to your Canvas component
+//       <div>
+//         <div style={{ marginBottom: '10px' }}>
+//           Current: [{cameraValues.position.join(', ')}], FOV: {cameraValues.fov}
+//         </div>
+        
+//         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '5px', marginBottom: '10px' }}>
+//           <div>
+//             <label style={{ fontSize: '12px', display: 'block', marginBottom: '2px' }}>X</label>
+//             <input
+//               ref={xInputRef}
+//               type="number"
+//               step="0.5"
+//               defaultValue={cameraValues.position[0]}
+//               style={{ width: '100%', padding: '3px', fontSize: '12px' }}
+//             />
+//           </div>
+//           <div>
+//             <label style={{ fontSize: '12px', display: 'block', marginBottom: '2px' }}>Y</label>
+//             <input
+//               ref={yInputRef}
+//               type="number"
+//               step="0.5"
+//               defaultValue={cameraValues.position[1]}
+//               style={{ width: '100%', padding: '3px', fontSize: '12px' }}
+//             />
+//           </div>
+//           <div>
+//             <label style={{ fontSize: '12px', display: 'block', marginBottom: '2px' }}>Z</label>
+//             <input
+//               ref={zInputRef}
+//               type="number" 
+//               step="0.5"
+//               defaultValue={cameraValues.position[2]}
+//               style={{ width: '100%', padding: '3px', fontSize: '12px' }}
+//             />
+//           </div>
+//           <div>
+//             <label style={{ fontSize: '12px', display: 'block', marginBottom: '2px' }}>FOV</label>
+//             <input
+//               ref={fovInputRef}
+//               type="number"
+//               min="10"
+//               max="120"
+//               step="5"
+//               defaultValue={cameraValues.fov}
+//               style={{ width: '100%', padding: '3px', fontSize: '12px' }}
+//             />
+//           </div>
+//         </div>
+        
+//         <button
+//           onClick={updateCameraPosition}
+//           style={{
+//             background: '#3182ce',
+//             color: 'white',
+//             border: 'none',
+//             borderRadius: '4px',
+//             padding: '5px 10px',
+//             cursor: 'pointer',
+//             width: '100%'
+//           }}
+//         >
+//           Move Camera
+//         </button>
 //       </div>
 //     </Html>
 //   );
@@ -82,7 +158,7 @@
 //       }}
 //       style={{ width: '100%', height: '90vh' }}
 //     >
-//       {/* Camera logger now INSIDE Canvas */}
+//       {/* Camera logger with interactive controls */}
 //       <CameraPositionLogger />
       
 //       <ambientLight intensity={0.5} />

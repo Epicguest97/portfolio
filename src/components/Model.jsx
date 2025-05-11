@@ -1,21 +1,9 @@
-import { useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
-import * as THREE from 'three';
-
-const Model = () => {
-  const { scene, animations } = useGLTF('/models/comp.glb', true);
-
-  useEffect(() => {
-    if (animations.length > 0) {
-      const mixer = new THREE.AnimationMixer(scene);
-      animations.forEach((clip) => {
-        const action = mixer.clipAction(clip);
-        action.stop();  // Stop all animations
-      });
-    }
-  }, [scene, animations]);
-
-  return <primitive object={scene} scale={1.5} />;
-};
+function Model() {
+  const gltf = useGLTF('/models/Comp.glb');
+  return <primitive object={gltf.scene} />;
+}
+// In Canvas:
+<Model />
 
 export default Model;

@@ -1,23 +1,44 @@
-// ObjectSelection.js
+import { useThree } from '@react-three/fiber';
 import { useEffect } from 'react';
-import { useLoader } from '@react-three/fiber';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import * as THREE from 'three';
 
-const ObjectSelection = () => {
-  const gltf = useLoader(GLTFLoader, '/models/scene.glb');
+const ObjectSelect = ({ setIsFixed, setTargetPosition }) => {
+  const { gl, camera, scene } = useThree();
 
   useEffect(() => {
-    const targetObject = gltf.scene.getObjectByName('Object_13');
-    if (targetObject) {
-      console.log('Object_13 found:', targetObject);
-      // Move the object to the desired position
-      targetObject.position.set(-5, 2, 2);
-    } else {
-      console.log('Object_13 not found');
-    }
-  }, [gltf]);
+    const handleClick = (event) => {
+      const mouse = new THREE.Vector2(
+        (event.clientX / window.innerWidth) * 2 - 1,
+        -(event.clientY / window.innerHeight) * 2 + 1
+      );
 
-  return <primitive object={gltf.scene} />;
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(scene.children, true);
+
+      if (intersects.length > 0) {
+        const clickedObject = intersects[0].object;
+
+        // Log the object name
+        console.log("Clicked on object:", clickedObject.name);
+
+        // Check if the clicked object is Object_13
+        if (clickedObject.name === 'Object_13') {
+          console.log("Object_13 clicked!");
+          setTargetPosition(new THREE.Vector3(-0.15, 0.08, 1.68));
+          setIsFixed(true);
+        }
+      }
+    };
+
+    gl.domElement.addEventListener('click', handleClick);
+
+    return () => {
+      gl.domElement.removeEventListener('click', handleClick);
+    };
+  }, [gl, camera, scene, setIsFixed, setTargetPosition]);
+
+  return null;
 };
 
-export default ObjectSelection;
+export default ObjectSelect;
